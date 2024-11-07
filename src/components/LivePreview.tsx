@@ -16,6 +16,31 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
 
         await new Promise((resolve) => setTimeout(resolve, 100));
 
+        try {
+          // Remove old script if exists
+          const oldScript = document.getElementById("live-preview-script");
+          if (oldScript) {
+            oldScript.remove();
+          }
+
+          // Create new script with IIFE
+          const script = document.createElement("script");
+          script.id = "live-preview-script";
+          script.textContent = `
+            (function() {
+              try {
+                ${jsCode}
+              } catch (e) {
+                //console.error('Error executing preview code:', e);
+              }
+            })();
+          `;
+
+          document.body.appendChild(script);
+        } catch (error) {
+          console.error("Error in live preview:", error);
+        }
+
         const iframeDoc = iframeRef.current.contentDocument;
         if (!iframeDoc) return;
 
@@ -41,7 +66,9 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
             <body>
                 ${htmlCode}
             <script>
-            ${jsCode}
+              setTimeout(() => {
+                ${jsCode}
+              }, 1000);
             </script>
             </body>
         </html>
