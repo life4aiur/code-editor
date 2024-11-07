@@ -1,27 +1,31 @@
 import { useState } from "react";
-import "./App.css";
 import CodeEditor from "./components/CodeEditor";
+import CSSEditor from "./components/CSSEditor";
+import JavaScriptEditor from "./components/JavaScriptEditor";
 import LivePreview from "./components/LivePreview";
 
 function App() {
-  const [code, setCode] = useState("<p>Hello</p>");
+  const [htmlCode, setHtmlCode] = useState("<h1>Hello World</h1>");
+  const [jsCode, setJsCode] = useState("// Your JavaScript here");
+  const [cssCode, setCssCode] = useState("/* Your CSS here */");
 
   return (
-    <>
-      <div className="flex h-screen">
-        <div className="flex-1">
-          <CodeEditor
-            code={code}
-            onChange={(newCode) => {
-              setCode(newCode);
-            }}
-          />
+    <div className="flex h-screen gap-4">
+      <div className="w-1/2 flex flex-col">
+        <div className="h-1/3">
+          <CodeEditor code={htmlCode} onChange={setHtmlCode} />
         </div>
-        <div className="flex-1">
-          <LivePreview code={code} />
+        <div className="h-1/3">
+          <JavaScriptEditor code={jsCode} onChange={setJsCode} />
+        </div>
+        <div className="h-1/3">
+          <CSSEditor code={cssCode} onChange={setCssCode} />
         </div>
       </div>
-    </>
+      <div className="w-1/2">
+        <LivePreview htmlCode={htmlCode} jsCode={jsCode} cssCode={cssCode} />
+      </div>
+    </div>
   );
 }
 

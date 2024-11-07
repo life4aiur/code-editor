@@ -1,6 +1,12 @@
 import { useEffect, useRef } from "react";
 
-const LivePreview = ({ code }: { code: string }) => {
+type LivePreviewProps = {
+  htmlCode: string;
+  jsCode: string;
+  cssCode: string;
+};
+
+const LivePreview = ({ htmlCode, jsCode, cssCode }: LivePreviewProps) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   useEffect(() => {
@@ -16,41 +22,41 @@ const LivePreview = ({ code }: { code: string }) => {
       iframeDoc.write(/*html*/ `
         <!DOCTYPE html>
         <html>
-          <head>
-            <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-            <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-            <!-- Components for modern browsers -->
-            <script type="module" src="/node_modules/@symplr-ux/alloy-components/dist/symplr-stencil-components/symplr-stencil-components.esm.js"></script>
-            <!-- Iconography -->
-            <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux//alloy-icons/dist/icons.min.css">
-            <!-- Font -->
-            <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/fonts/lato.min.css">
-            <!-- Theme -->
-            <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css">
-          </head>
-          <body>
-            <div id="root">
-              ${code}
-            </div>
+            <head>
+                <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+                <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+                <!-- Components for modern browsers -->
+                <script type="module" src="/node_modules/@symplr-ux/alloy-components/dist/symplr-stencil-components/symplr-stencil-components.esm.js"></script>
+                <!-- Iconography -->
+                <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux//alloy-icons/dist/icons.min.css">
+                <!-- Font -->
+                <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/fonts/lato.min.css">
+                <!-- Theme -->
+                <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css">
+                <style>
+                ${cssCode}
+                </style>
+            </head>
+            <body>
+                ${htmlCode}
             <script>
-              const root = ReactDOM.createRoot(document.getElementById('root'));
-              root.render(React.createElement(App));
+            ${jsCode}
             </script>
-          </body>
+            </body>
         </html>
       `);
       iframeDoc.close();
     };
 
     init();
-  }, [code]);
+  }, [htmlCode, jsCode, cssCode]);
 
   return (
     <iframe
       ref={iframeRef}
       title="Live Preview"
       style={{ width: "100%", height: "100%", border: "none" }}
-      sandbox="allow-scripts allow-same-origin"
+      sandbox="allow-scripts allow-same-origin allow-modals allow-forms"
     />
   );
 };
