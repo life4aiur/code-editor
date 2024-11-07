@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect } from "react";
 
 type LivePreviewProps = {
   htmlCode: string;
@@ -6,20 +6,21 @@ type LivePreviewProps = {
   cssCode: string;
 };
 
-const LivePreview = ({ htmlCode, jsCode, cssCode }: LivePreviewProps) => {
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
+  ({ htmlCode, jsCode, cssCode }, ref) => {
+    const iframeRef = ref as React.RefObject<HTMLIFrameElement>;
 
-  useEffect(() => {
-    const init = async () => {
-      if (!iframeRef.current) return;
+    useEffect(() => {
+      const init = async () => {
+        if (!iframeRef.current) return;
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const iframeDoc = iframeRef.current.contentDocument;
-      if (!iframeDoc) return;
+        const iframeDoc = iframeRef.current.contentDocument;
+        if (!iframeDoc) return;
 
-      iframeDoc.open();
-      iframeDoc.write(/*html*/ `
+        iframeDoc.open();
+        iframeDoc.write(/*html*/ `
         <!DOCTYPE html>
         <html>
             <head>
@@ -45,20 +46,21 @@ const LivePreview = ({ htmlCode, jsCode, cssCode }: LivePreviewProps) => {
             </body>
         </html>
       `);
-      iframeDoc.close();
-    };
+        iframeDoc.close();
+      };
 
-    init();
-  }, [htmlCode, jsCode, cssCode]);
+      init();
+    }, [htmlCode, jsCode, cssCode]);
 
-  return (
-    <iframe
-      ref={iframeRef}
-      title="Live Preview"
-      style={{ width: "100%", height: "100%", border: "none" }}
-      sandbox="allow-scripts allow-same-origin allow-modals allow-forms"
-    />
-  );
-};
+    return (
+      <iframe
+        ref={ref}
+        title="Live Preview"
+        style={{ width: "100%", height: "100%", border: "none" }}
+        sandbox="allow-scripts allow-same-origin allow-modals allow-forms"
+      />
+    );
+  }
+);
 
 export default LivePreview;
