@@ -40,7 +40,7 @@ function App() {
         className="h-12 fixed top-0 w-full flex items-center px-4 py-2 justify-between bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
       >
         <h1 className="text-gray-900 dark:text-white flex items-center gap-2 text-xl">
-          <SymplIcon name="si-symplr" className="text-blue-600 dark:text-blue-500" /> Alloy Sandbox
+          <SymplIcon name="si-symplr" color="light" /> Alloy Sandbox
         </h1>
         <LanguageSelector onLanguageChange={handleLanguageChange} />
         <div className="flex gap-4">
@@ -48,7 +48,9 @@ function App() {
             id="toggle-explorer-button"
             className="inline-flex items-center cursor-pointer"
           >
-            <span className="mr-2 text-sm text-gray-700 dark:text-gray-300">Explorer mode</span>
+            <span className="mr-2 text-sm text-gray-700 dark:text-gray-300">
+              Explorer mode
+            </span>
             <div className="relative">
               <input
                 type="checkbox"
@@ -135,24 +137,34 @@ function App() {
         <div className="flex-1 flex flex-col">
           <div className="flex flex-1">
             <div className="w-1/2 flex flex-col">
-              <div className="h-1/3 border-b-2 border-gray-500">
-                {selectedLanguage === "react" && (
-                  <ReactEditor code={reactCode} onChange={setReactCode} />
-                )}
-                {selectedLanguage !== "react" && (
-                  <CodeEditor
-                    code={htmlCode}
-                    onChange={setHtmlCode}
-                    onUpdateJavaScript={onUpdateJavaScript}
-                  />
-                )}
-              </div>
-              <div className="h-1/3 border-b-2 border-gray-500">
-                <JavaScriptEditor code={jsCode} onChange={setJsCode} />
-              </div>
-              <div className="h-1/3">
-                <CSSEditor code={cssCode} onChange={setCssCode} />
-              </div>
+              {selectedLanguage === "react" ? (
+                // React mode: ReactEditor takes 2/3 height
+                <>
+                  <div className="h-2/3 border-b-2 border-gray-500">
+                    <ReactEditor code={reactCode} onChange={setReactCode} />
+                  </div>
+                  <div className="h-1/3">
+                    <CSSEditor code={cssCode} onChange={setCssCode} />
+                  </div>
+                </>
+              ) : (
+                // HTML mode: Original 3-panel layout
+                <>
+                  <div className="h-1/3 border-b-2 border-gray-500">
+                    <CodeEditor
+                      code={htmlCode}
+                      onChange={setHtmlCode}
+                      onUpdateJavaScript={onUpdateJavaScript}
+                    />
+                  </div>
+                  <div className="h-1/3 border-b-2 border-gray-500">
+                    <JavaScriptEditor code={jsCode} onChange={setJsCode} />
+                  </div>
+                  <div className="h-1/3">
+                    <CSSEditor code={cssCode} onChange={setCssCode} />
+                  </div>
+                </>
+              )}
             </div>
             <div className="w-1/2 border-l-2 border-gray-500">
               <LivePreview
