@@ -1,3 +1,7 @@
+@import "@symplr-ux/alloy-theme/dist/fonts/lato.min.css";
+@import "@symplr-ux/alloy-icons/dist/icons.min.css";
+@import "@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
