@@ -20,6 +20,7 @@ const CodeEditor = ({
   const editorRef = useRef<any>(null);
 
   const handleDrop = (e: React.DragEvent) => {
+    console.log("handleDrop");
     e.preventDefault();
     const data = e.dataTransfer.getData("text/plain");
 
@@ -61,11 +62,12 @@ const CodeEditor = ({
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <EditorHeader
-        title="HTML"
-        onClear={() => onChange("")}
-      />
+    <div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      className="h-full flex flex-col"
+    >
+      <EditorHeader title="HTML" onClear={() => onChange("")} />
       <div className="flex-1">
         <Editor
           height="100%"

@@ -37,10 +37,10 @@ function App() {
     <>
       <div
         id="headerguy"
-        className="h-12 fixed top-0 w-full flex items-center px-4 py-2 justify-between bg-gray-800 text-white"
+        className="h-12 fixed top-0 w-full flex items-center px-4 py-2 justify-between bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
       >
-        <h1 className="text-white flex items-center gap-2 text-xl">
-          <SymplIcon name="si-symplr" color="light" /> Alloy Sandbox
+        <h1 className="text-gray-900 dark:text-white flex items-center gap-2 text-xl">
+          <SymplIcon name="si-symplr" className="text-blue-600 dark:text-blue-500" /> Alloy Sandbox
         </h1>
         <LanguageSelector onLanguageChange={handleLanguageChange} />
         <div className="flex gap-4">
@@ -48,7 +48,7 @@ function App() {
             id="toggle-explorer-button"
             className="inline-flex items-center cursor-pointer"
           >
-            <span className="mr-2 text-sm">Explorer mode</span>
+            <span className="mr-2 text-sm text-gray-700 dark:text-gray-300">Explorer mode</span>
             <div className="relative">
               <input
                 type="checkbox"
@@ -89,7 +89,9 @@ function App() {
           />
           <button
             onClick={() => document.getElementById("load-file")?.click()}
-            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-white flex items-center"
+            className="px-2 py-1 bg-blue-600 dark:bg-blue-600 hover:bg-blue-700
+                       dark:hover:bg-blue-700 rounded text-white dark:text-white
+                       flex items-center transition-colors"
             aria-label="Load file"
           >
             <SymplIcon name="si-upload" color="light" />
@@ -113,7 +115,9 @@ function App() {
               a.click();
               URL.revokeObjectURL(url);
             }}
-            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-white flex items-center"
+            className="px-2 py-1 bg-blue-600 dark:bg-blue-600 hover:bg-blue-700
+                       dark:hover:bg-blue-700 rounded text-white dark:text-white
+                       flex items-center transition-colors"
           >
             <SymplIcon name="si-save" color="light" />
           </button>
@@ -121,10 +125,10 @@ function App() {
       </div>
       <div
         id="bodyguy"
-        className="flex h-[calc(100vh-3rem)] mt-12 border-2 border-gray-500"
+        className="flex h-[calc(100vh-3rem)] mt-12 border-2 border-gray-200 dark:border-gray-700"
       >
         {showExplorer && (
-          <div className="border-r-4 border-gray-500">
+          <div className="border-r-4 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
             <ComponentExplorer />
           </div>
         )}

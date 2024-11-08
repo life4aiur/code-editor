@@ -47,12 +47,14 @@ const ComponentExplorer = () => {
             key={component.name}
             draggable
             onDragStart={(e) => handleDragStart(e, component.name)}
-            className="flex items-center p-3 hover:bg-gray-50 cursor-move"
+            className="flex items-center p-3 hover:bg-blue-900 cursor-move"
           >
             <div className="w-10 h-10 bg-gray-100 rounded-md flex items-center justify-center text-gray-400">
               <div className="text-xs">{component.name[0].toUpperCase()}</div>
             </div>
-            <span className="ml-3 text-sm text-gray-700">{component.name}</span>
+            <span className="ml-3 text-sm text-gray-200">
+              {component.name}
+            </span>
           </div>
         ))}
       </div>
