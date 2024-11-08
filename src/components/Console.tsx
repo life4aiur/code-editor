@@ -22,10 +22,21 @@ const Console = ({ iframeRef }: ConsoleProps) => {
   }, [iframeRef]);
 
   return (
-    <div className="bg-gray-900 text-white p-4 h-full font-mono overflow-auto">
-      {logs.map((log, i) => (
-        <div key={i}>{`> ${log}`}</div>
-      ))}
+    <div className="bg-gray-900 text-white h-full font-mono flex flex-col">
+      <div className="flex justify-between items-center py-2 px-4 border-b border-gray-700 bg-gray-800">
+        <div className="text-gray-400">Console Output</div>
+        <button 
+          onClick={() => setLogs([])}
+          className="px-2 py-0.5 text-sm bg-gray-700 hover:bg-gray-600 rounded"
+        >
+          Clear
+        </button>
+      </div>
+      <div className="p-4 overflow-auto flex-1">
+        {logs.map((log, i) => (
+          <div key={i}>{`> ${log}`}</div>
+        ))}
+      </div>
     </div>
   );
 };
