@@ -66,9 +66,7 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
             <body>
                 ${htmlCode}
             <script>
-              setTimeout(() => {
                 ${jsCode}
-              }, 1000);
             </script>
             </body>
         </html>
@@ -77,7 +75,7 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
       };
 
       init();
-    }, [htmlCode, jsCode, cssCode]);
+    }, [htmlCode, jsCode, cssCode, iframeRef]);
 
     return (
       <iframe
