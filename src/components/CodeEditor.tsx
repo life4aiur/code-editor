@@ -17,7 +17,6 @@ const CodeEditor = ({
   onUpdateJavaScript,
 }: CodeEditorProps) => {
   const editorRef = useRef<any>(null);
-  const jsEditorRef = useRef<any>(null);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -67,7 +66,7 @@ const CodeEditor = ({
         defaultLanguage="html"
         value={code}
         onChange={(value) => onChange(value || "")}
-        theme="vs-light"
+        theme="vs-dark"
         options={{
           minimap: { enabled: false },
           automaticLayout: true,

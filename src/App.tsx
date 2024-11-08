@@ -5,7 +5,9 @@ import ComponentExplorer from "./components/ComponentExplorer";
 import Console from "./components/Console";
 import CSSEditor from "./components/CSSEditor";
 import JavaScriptEditor from "./components/JavaScriptEditor";
+import { LanguageSelector } from "./components/LanguageSelector";
 import LivePreview from "./components/LivePreview";
+import ReactEditor from "./components/ReactEditor";
 
 function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -13,12 +15,22 @@ function App() {
   const [jsCode, setJsCode] = useState("// Your JavaScript here");
   const [cssCode, setCssCode] = useState("/* Your CSS here */");
   const [showExplorer, setShowExplorer] = useState(true);
+  const [selectedLanguage, setSelectedLanguage] = useState<"react" | "html">(
+    "react"
+  );
+  const [reactCode, setReactCode] = useState(`function App() {
+  return <h1>Hello, React</h1>;
+}`);
 
   const onUpdateJavaScript = (newCode: string) => {
     setJsCode((prevCode) => {
       // If there's existing code, add newline before appending
       return prevCode ? `${prevCode}\n\n${newCode}` : newCode;
     });
+  };
+
+  const handleLanguageChange = (language: "react" | "html") => {
+    setSelectedLanguage(language);
   };
 
   return (
@@ -30,6 +42,7 @@ function App() {
         <h1 className="text-white flex items-center gap-2 text-xl">
           <SymplIcon name="si-symplr" color="light" /> Alloy Sandbox
         </h1>
+        <LanguageSelector onLanguageChange={handleLanguageChange} />
         <div className="flex gap-4">
           <label
             id="toggle-explorer-button"
@@ -119,11 +132,16 @@ function App() {
           <div className="flex flex-1">
             <div className="w-1/2 flex flex-col">
               <div className="h-1/3 border-b-2 border-gray-500">
-                <CodeEditor
-                  code={htmlCode}
-                  onChange={setHtmlCode}
-                  onUpdateJavaScript={onUpdateJavaScript}
-                />
+                {selectedLanguage === "react" && (
+                  <ReactEditor code={reactCode} onChange={setReactCode} />
+                )}
+                {selectedLanguage !== "react" && (
+                  <CodeEditor
+                    code={htmlCode}
+                    onChange={setHtmlCode}
+                    onUpdateJavaScript={onUpdateJavaScript}
+                  />
+                )}
               </div>
               <div className="h-1/3 border-b-2 border-gray-500">
                 <JavaScriptEditor code={jsCode} onChange={setJsCode} />
@@ -136,8 +154,9 @@ function App() {
               <LivePreview
                 ref={iframeRef}
                 htmlCode={htmlCode}
-                jsCode={jsCode}
+                jsCode={selectedLanguage === "react" ? reactCode : jsCode}
                 cssCode={cssCode}
+                language={selectedLanguage}
               />
             </div>
           </div>
@@ -149,5 +168,4 @@ function App() {
     </>
   );
 }
-
 export default App;
