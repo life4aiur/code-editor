@@ -45,8 +45,19 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
             <body>
                 ${htmlCode}
             <script>
+                // Clear previous functions/variables
+                Object.keys(window).forEach(key => {
+                    if (window[key] && /^user_/.test(key)) {
+                        delete window[key];
+                    }
+                });
+
+                // Wrap code to avoid conflicts but expose functions to window
                 (function() {
-                    ${jsCode}
+                    ${jsCode.replace(
+                      /function\s+(\w+)/g,
+                      "window.user_$1 = function"
+                    )}
                 })();
             </script>
             </body>
