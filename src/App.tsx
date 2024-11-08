@@ -30,19 +30,79 @@ function App() {
         <h1 className="text-white flex items-center gap-2 text-xl">
           <SymplIcon name="si-symplr" color="light" /> Alloy Sandbox
         </h1>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setShowExplorer((prev) => !prev)}
-            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-white"
+        <div className="flex gap-4">
+          <label
+            id="toggle-explorer-button"
+            className="inline-flex items-center cursor-pointer"
           >
-            {showExplorer ? "Hide" : "Show"} Explorer
+            <span className="mr-2 text-sm">Explorer mode</span>
+            <div className="relative">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={showExplorer}
+                onChange={() => setShowExplorer((prev) => !prev)}
+              />
+              <div
+                className="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-blue-600
+                peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px]
+                after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5
+                after:transition-all"
+              ></div>
+            </div>
+          </label>
+          <input
+            type="file"
+            id="load-file"
+            className="hidden"
+            accept=".json"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                try {
+                  const content = JSON.parse(e.target?.result as string);
+                  setHtmlCode(content.html);
+                  setJsCode(content.javascript);
+                  setCssCode(content.css);
+                } catch (err) {
+                  console.error("Failed to parse file:", err);
+                }
+              };
+              reader.readAsText(file);
+            }}
+          />
+          <button
+            onClick={() => document.getElementById("load-file")?.click()}
+            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-white flex items-center"
+            aria-label="Load file"
+          >
+            <SymplIcon name="si-upload" color="light" />
           </button>
           <button
             id="save-button"
-            onClick={() => {/* TODO */}}
-            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-white"
+            onClick={() => {
+              const content = {
+                html: htmlCode,
+                javascript: jsCode,
+                css: cssCode,
+              };
+
+              const blob = new Blob([JSON.stringify(content, null, 2)], {
+                type: "application/json",
+              });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "sandbox-state.json";
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-white flex items-center"
           >
-            Save
+            <SymplIcon name="si-save" color="light" />
           </button>
         </div>
       </div>
