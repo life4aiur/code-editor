@@ -19,6 +19,7 @@ const JavaScriptEditor = ({ code, onChange }: JavaScriptEditorProps) => {
         fontSize: 16,
         wordWrap: "on",
         lineNumbers: "on",
+        tabSize: 2,
       }}
     />
   );

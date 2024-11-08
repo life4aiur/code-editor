@@ -16,33 +16,12 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
 
         await new Promise((resolve) => setTimeout(resolve, 100));
 
-        try {
-          // Remove old script if exists
-          const oldScript = document.getElementById("live-preview-script");
-          if (oldScript) {
-            oldScript.remove();
-          }
-
-          // Create new script with IIFE
-          const script = document.createElement("script");
-          script.id = "live-preview-script";
-          script.textContent = `
-            (function() {
-              try {
-                ${jsCode}
-              } catch (e) {
-                //console.error('Error executing preview code:', e);
-              }
-            })();
-          `;
-
-          document.body.appendChild(script);
-        } catch (error) {
-          console.error("Error in live preview:", error);
-        }
-
         const iframeDoc = iframeRef.current.contentDocument;
         if (!iframeDoc) return;
+
+        // Clear any existing scripts in the iframe
+        const existingScripts = iframeDoc.getElementsByTagName("script");
+        Array.from(existingScripts).forEach((script) => script.remove());
 
         iframeDoc.open();
         iframeDoc.write(/*html*/ `
@@ -66,7 +45,9 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
             <body>
                 ${htmlCode}
             <script>
-                ${jsCode}
+                (function() {
+                    ${jsCode}
+                })();
             </script>
             </body>
         </html>
@@ -75,13 +56,27 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
       };
 
       init();
+
+      // Cleanup function
+      return () => {
+        if (iframeRef.current?.contentDocument) {
+          const scripts =
+            iframeRef.current.contentDocument.getElementsByTagName("script");
+          Array.from(scripts).forEach((script) => script.remove());
+        }
+      };
     }, [htmlCode, jsCode, cssCode, iframeRef]);
 
     return (
       <iframe
         ref={ref}
         title="Live Preview"
-        style={{ width: "100%", height: "100%", border: "none" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          border: "none",
+          padding: "8px",
+        }}
         sandbox="allow-scripts allow-same-origin allow-modals allow-forms"
       />
     );

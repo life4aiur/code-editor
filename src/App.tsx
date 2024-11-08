@@ -9,7 +9,7 @@ import LivePreview from "./components/LivePreview";
 
 function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [htmlCode, setHtmlCode] = useState("<h1>Hello World</h1>");
+  const [htmlCode, setHtmlCode] = useState("<h1>Hello, world!</h1>");
   const [jsCode, setJsCode] = useState("// Your JavaScript here");
   const [cssCode, setCssCode] = useState("/* Your CSS here */");
   const [showExplorer, setShowExplorer] = useState(true);

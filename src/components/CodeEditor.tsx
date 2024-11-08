@@ -74,6 +74,7 @@ const CodeEditor = ({
           fontSize: 16,
           wordWrap: "on",
           lineNumbers: "on",
+          tabSize: 2,
         }}
         onMount={(editor) => {
           editorRef.current = editor;

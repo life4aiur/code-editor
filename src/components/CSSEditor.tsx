@@ -19,6 +19,7 @@ const CSSEditor = ({ code, onChange }: CSSEditorProps) => {
         fontSize: 16,
         wordWrap: "on",
         lineNumbers: "on",
+        tabSize: 2,
       }}
     />
   );
