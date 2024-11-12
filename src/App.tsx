@@ -24,7 +24,6 @@ function App() {
 
   const onUpdateJavaScript = (newCode: string) => {
     setJsCode((prevCode) => {
-      // If there's existing code, add newline before appending
       return prevCode ? `${prevCode}\n\n${newCode}` : newCode;
     });
   };
@@ -79,9 +78,11 @@ function App() {
               reader.onload = (e) => {
                 try {
                   const content = JSON.parse(e.target?.result as string);
-                  setHtmlCode(content.html);
-                  setJsCode(content.javascript);
-                  setCssCode(content.css);
+                  setHtmlCode(content.html || "");
+                  setJsCode(content.javascript || "");
+                  setCssCode(content.css || "");
+                  setReactCode(content.react || "");
+                  setSelectedLanguage(content.language || "html");
                 } catch (err) {
                   console.error("Failed to parse file:", err);
                 }
@@ -105,6 +106,8 @@ function App() {
                 html: htmlCode,
                 javascript: jsCode,
                 css: cssCode,
+                react: reactCode,
+                language: selectedLanguage,
               };
 
               const blob = new Blob([JSON.stringify(content, null, 2)], {
@@ -184,4 +187,5 @@ function App() {
     </>
   );
 }
+
 export default App;
