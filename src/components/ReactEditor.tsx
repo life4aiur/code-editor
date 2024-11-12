@@ -11,9 +11,11 @@ const ReactEditor = ({ code, onChange }: ReactEditorProps) => {
     <div className="h-full flex flex-col">
       <EditorHeader
         title="React"
-        onClear={() => onChange(`function App() {
+        onClear={() =>
+          onChange(`function App() {
           return <div>Hello React</div>;
-        }`)}
+        }`)
+        }
       />
       <div className="flex-1">
         <Editor
@@ -21,6 +23,7 @@ const ReactEditor = ({ code, onChange }: ReactEditorProps) => {
           width="100%"
           defaultLanguage="javascript"
           defaultValue={code}
+          value={code}
           onChange={(value) => onChange(value || "")}
           theme="vs-dark"
           options={{

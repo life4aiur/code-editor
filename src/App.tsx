@@ -78,11 +78,23 @@ function App() {
               reader.onload = (e) => {
                 try {
                   const content = JSON.parse(e.target?.result as string);
-                  setHtmlCode(content.html || "");
-                  setJsCode(content.javascript || "");
-                  setCssCode(content.css || "");
-                  setReactCode(content.react || "");
+
+                  // Set the language first
                   setSelectedLanguage(content.language || "html");
+
+                  // Set CSS code for both modes
+                  setCssCode(content.css || "");
+
+                  if (content.language === "react") {
+                    // React mode: set React code
+                    setReactCode(content.react || `function App() {
+                      return <h1>Hello React</h1>;
+                    }`);
+                  } else {
+                    // HTML mode: set HTML and JS code
+                    setHtmlCode(content.html || "");
+                    setJsCode(content.javascript || "");
+                  }
                 } catch (err) {
                   console.error("Failed to parse file:", err);
                 }
