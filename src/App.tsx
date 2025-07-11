@@ -1,35 +1,21 @@
 import { SymplIcon } from "@symplr-ux/alloy-components/dist/react-bindings";
 import { useRef, useState } from "react";
 import CodeEditor from "./components/CodeEditor";
-import ComponentExplorer from "./components/ComponentExplorer";
 import Console from "./components/Console";
 import CSSEditor from "./components/CSSEditor";
 import JavaScriptEditor from "./components/JavaScriptEditor";
-import { LanguageSelector } from "./components/LanguageSelector";
 import LivePreview from "./components/LivePreview";
-import ReactEditor from "./components/ReactEditor";
 
 function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [htmlCode, setHtmlCode] = useState("<h1>Hello, world!</h1>");
   const [jsCode, setJsCode] = useState("// Your JavaScript here");
   const [cssCode, setCssCode] = useState("/* Your CSS here */");
-  const [showExplorer, setShowExplorer] = useState(true);
-  const [selectedLanguage, setSelectedLanguage] = useState<"react" | "html">(
-    "react"
-  );
-  const [reactCode, setReactCode] = useState(`function App() {
-  return <h1>Hello, React</h1>;
-}`);
 
   const onUpdateJavaScript = (newCode: string) => {
     setJsCode((prevCode) => {
       return prevCode ? `${prevCode}\n\n${newCode}` : newCode;
     });
-  };
-
-  const handleLanguageChange = (language: "react" | "html") => {
-    setSelectedLanguage(language);
   };
 
   return (
@@ -41,30 +27,7 @@ function App() {
         <h1 className="text-gray-900 dark:text-white flex items-center gap-2 text-xl">
           <SymplIcon name="si-symplr" color="light" /> Alloy Sandbox
         </h1>
-        <LanguageSelector onLanguageChange={handleLanguageChange} />
         <div className="flex gap-4">
-          <label
-            id="toggle-explorer-button"
-            className="inline-flex items-center cursor-pointer"
-          >
-            <span className="mr-2 text-sm text-gray-700 dark:text-gray-300">
-              Explorer mode
-            </span>
-            <div className="relative">
-              <input
-                type="checkbox"
-                className="sr-only peer"
-                checked={showExplorer}
-                onChange={() => setShowExplorer((prev) => !prev)}
-              />
-              <div
-                className="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-blue-600
-                peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px]
-                after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5
-                after:transition-all"
-              ></div>
-            </div>
-          </label>
           <input
             type="file"
             id="load-file"
@@ -79,22 +42,13 @@ function App() {
                 try {
                   const content = JSON.parse(e.target?.result as string);
 
-                  // Set the language first
-                  setSelectedLanguage(content.language || "html");
-
                   // Set CSS code for both modes
                   setCssCode(content.css || "");
 
-                  if (content.language === "react") {
-                    // React mode: set React code
-                    setReactCode(content.react || `function App() {
-                      return <h1>Hello React</h1>;
-                    }`);
-                  } else {
-                    // HTML mode: set HTML and JS code
-                    setHtmlCode(content.html || "");
-                    setJsCode(content.javascript || "");
-                  }
+                  // HTML mode: set HTML and JS code
+                  setHtmlCode(content.html || "");
+                  setJsCode(content.javascript || "");
+
                 } catch (err) {
                   console.error("Failed to parse file:", err);
                 }
@@ -118,8 +72,6 @@ function App() {
                 html: htmlCode,
                 javascript: jsCode,
                 css: cssCode,
-                react: reactCode,
-                language: selectedLanguage,
               };
 
               const blob = new Blob([JSON.stringify(content, null, 2)], {
@@ -144,50 +96,30 @@ function App() {
         id="bodyguy"
         className="flex h-[calc(100vh-3rem)] mt-12 border-2 border-gray-200 dark:border-gray-700"
       >
-        {showExplorer && (
-          <div className="border-r-4 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-            <ComponentExplorer />
-          </div>
-        )}
         <div className="flex-1 flex flex-col">
           <div className="flex flex-1">
             <div className="w-1/2 flex flex-col">
-              {selectedLanguage === "react" ? (
-                // React mode: ReactEditor takes 2/3 height
-                <>
-                  <div className="h-2/3 border-b-2 border-gray-500">
-                    <ReactEditor code={reactCode} onChange={setReactCode} />
-                  </div>
-                  <div className="h-1/3">
-                    <CSSEditor code={cssCode} onChange={setCssCode} />
-                  </div>
-                </>
-              ) : (
-                // HTML mode: Original 3-panel layout
-                <>
-                  <div className="h-1/3 border-b-2 border-gray-500">
-                    <CodeEditor
-                      code={htmlCode}
-                      onChange={setHtmlCode}
-                      onUpdateJavaScript={onUpdateJavaScript}
-                    />
-                  </div>
-                  <div className="h-1/3 border-b-2 border-gray-500">
-                    <JavaScriptEditor code={jsCode} onChange={setJsCode} />
-                  </div>
-                  <div className="h-1/3">
-                    <CSSEditor code={cssCode} onChange={setCssCode} />
-                  </div>
-                </>
-              )}
+              <>
+                <div className="h-1/3 border-b-2 border-gray-500">
+                  <CodeEditor
+                    code={htmlCode}
+                    onChange={setHtmlCode}
+                  />
+                </div>
+                <div className="h-1/3 border-b-2 border-gray-500">
+                  <JavaScriptEditor code={jsCode} onChange={setJsCode} />
+                </div>
+                <div className="h-1/3">
+                  <CSSEditor code={cssCode} onChange={setCssCode} />
+                </div>
+              </>
             </div>
             <div className="w-1/2 border-l-2 border-gray-500">
               <LivePreview
                 ref={iframeRef}
                 htmlCode={htmlCode}
-                jsCode={selectedLanguage === "react" ? reactCode : jsCode}
+                jsCode={jsCode}
                 cssCode={cssCode}
-                language={selectedLanguage}
               />
             </div>
           </div>
