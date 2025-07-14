@@ -7,6 +7,8 @@ import LivePreview from "./components/LivePreview";
 import "./splitter.css";
 
 function App() {
+  // Multi-expand accordion: each editor can be expanded/collapsed independently
+  const [expanded, setExpanded] = useState({ html: true, js: true, css: true });
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [htmlCode, setHtmlCode] = useState("<h1>Hello, world!</h1>");
   const [jsCode, setJsCode] = useState("// Your JavaScript here");
@@ -66,21 +68,66 @@ function App() {
           }}
         />
       )}
-      <div className="app-main">
-        <div className="app-editors-row" ref={containerRef}>
+      <div className="app-main" style={{ height: '100vh', minHeight: 0 }}>
+        <div className="app-editors-row" ref={containerRef} style={{ height: '100%', minHeight: 0 }}>
           <div
             className="app-editors-col"
-            style={{ width: `${editorColWidth}%` }}
+            style={{
+              width: `${editorColWidth}%`,
+              height: '100%',
+              minHeight: 0,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
           >
-            <div className="editor-section">
-              <CodeEditor code={htmlCode} onChange={setHtmlCode} />
-            </div>
-            <div className="editor-section">
-              <JavaScriptEditor code={jsCode} onChange={setJsCode} />
-            </div>
-            <div className="editor-section">
-              <CSSEditor code={cssCode} onChange={setCssCode} />
-            </div>
+            {(() => {
+              const expandedCount = [expanded.html, expanded.js, expanded.css].filter(Boolean).length;
+              // Each expanded editor gets an equal share of the space
+              const flexBasis = expandedCount > 0 ? `${100 / expandedCount}%` : '0%';
+              return (
+                <>
+                  <div
+                    className="editor-section"
+                    style={expanded.html
+                      ? { flex: `1 1 ${flexBasis}`, minHeight: 0, overflow: 'hidden' }
+                      : { flex: '0 0 auto', minHeight: 0, maxHeight: 40, overflow: 'hidden' }}
+                  >
+                    <CodeEditor
+                      code={htmlCode}
+                      onChange={setHtmlCode}
+                      expanded={expanded.html}
+                      onExpand={() => setExpanded(e => ({ ...e, html: !e.html }))}
+                    />
+                  </div>
+                  <div
+                    className="editor-section"
+                    style={expanded.js
+                      ? { flex: `1 1 ${flexBasis}`, minHeight: 0, overflow: 'hidden' }
+                      : { flex: '0 0 auto', minHeight: 0, maxHeight: 40, overflow: 'hidden' }}
+                  >
+                    <JavaScriptEditor
+                      code={jsCode}
+                      onChange={setJsCode}
+                      expanded={expanded.js}
+                      onExpand={() => setExpanded(e => ({ ...e, js: !e.js }))}
+                    />
+                  </div>
+                  <div
+                    className="editor-section"
+                    style={expanded.css
+                      ? { flex: `1 1 ${flexBasis}`, minHeight: 0, overflow: 'hidden' }
+                      : { flex: '0 0 auto', minHeight: 0, maxHeight: 40, overflow: 'hidden' }}
+                  >
+                    <CSSEditor
+                      code={cssCode}
+                      onChange={setCssCode}
+                      expanded={expanded.css}
+                      onExpand={() => setExpanded(e => ({ ...e, css: !e.css }))}
+                    />
+                  </div>
+                </>
+              );
+            })()}
           </div>
           <div
             className="splitter"

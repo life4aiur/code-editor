@@ -17,14 +17,16 @@ export function EditorHeader({ title, onClear, onCollapse, isCollapsed }: Editor
             onClick={onCollapse}
             className="editor-header-btn"
             aria-label={isCollapsed ? 'Expand' : 'Collapse'}
+            type="button"
           >
-            {isCollapsed ? 'Expand' : 'Collapse'}
+            <SymplIcon name={isCollapsed ? 'si-chevron-down' : 'si-chevron-up'} color="light" />
           </button>
         )}
         <button
           onClick={onClear}
-          className="app-header-btn"
+          className="editor-header-btn"
           aria-label="Clear"
+          type="button"
         >
           <SymplIcon name="si-trash" color="light" />
         </button>
