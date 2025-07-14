@@ -1,4 +1,5 @@
 
+import { SymplIcon } from "@symplr-ux/alloy-components/dist/react-bindings";
 import { forwardRef, useEffect } from "react";
 import './LivePreview.css';
 
@@ -6,10 +7,12 @@ type LivePreviewProps = {
   htmlCode: string;
   jsCode: string;
   cssCode: string;
+  onUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSave?: () => void;
 };
 
 const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
-  ({ htmlCode, jsCode, cssCode }, ref) => {
+  ({ htmlCode, jsCode, cssCode, onUpload, onSave }, ref) => {
     const iframeRef = ref as React.RefObject<HTMLIFrameElement>;
 
     useEffect(() => {
@@ -84,30 +87,38 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
     }, [htmlCode, jsCode, cssCode, iframeRef]);
 
     return (
-      <div style={{ position: "relative", width: "100%", height: "100%" }}>
-        <div
-          style={{
-            padding: "12px 16px",
-            backgroundColor: "#1e1e1e",
-            color: "#fff",
-            borderBottom: "1px solid #000",
-            display: "flex",
-            gap: "12px",
-            alignItems: "center",
-          }}
-        >
-          <span style={{ fontSize: 14, fontWeight: 500 }}>Live Preview</span>
+      <div className="live-preview-outer">
+        <div className="live-preview-header">
+          <span className="live-preview-title">Live Preview</span>
+          <div className="live-preview-header-actions">
+            <input
+              type="file"
+              id="live-load-file"
+              className="file-input-hidden"
+              accept=".json"
+              onChange={onUpload}
+            />
+            <button
+              onClick={() => document.getElementById("live-load-file")?.click()}
+              className="app-header-btn"
+              aria-label="Load file"
+            >
+              <SymplIcon name="si-upload" color="light" />
+            </button>
+            <button
+              id="live-save-button"
+              onClick={onSave}
+              className="app-header-btn"
+              aria-label="Save file"
+            >
+              <SymplIcon name="si-save" color="light" />
+            </button>
+          </div>
         </div>
         <iframe
           ref={ref}
           title="Live Preview"
-          style={{
-            backgroundColor: "var(--alloy-alias-color-background-default)",
-            width: "100%",
-            height: "calc(100% - 45px)",
-            border: "none",
-            padding: "8px",
-          }}
+          className="live-preview-iframe"
           sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups"
         />
       </div>

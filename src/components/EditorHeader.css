@@ -7,6 +7,9 @@
   align-items: center;
   font-size: 0.875rem;
   font-weight: 400;
+  min-height: 2.5rem;
+  height: 2.5rem;
+  border-bottom: 1px solid #4a5568;
 }
 
 .editor-header-actions {
