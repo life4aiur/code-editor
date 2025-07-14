@@ -80,9 +80,23 @@
 .preview-section {
   width: 50%;
   border-left: 2px solid #2d3748;
+  display: flex;
+  flex-direction: column;
   font-size: 1rem;
   font-weight: 500;
-  cursor: pointer;
+}
+
+.live-preview-flex {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.console-section {
+  height: 12rem;
+  min-height: 4rem;
+  max-height: 50vh;
+  border-top: 2px solid #2d3748;
+  overflow: auto;
 }
 
 .app-header-btn {

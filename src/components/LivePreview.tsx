@@ -102,6 +102,7 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
           ref={ref}
           title="Live Preview"
           style={{
+            backgroundColor: "var(--alloy-alias-color-background-default)",
             width: "100%",
             height: "calc(100% - 45px)",
             border: "none",

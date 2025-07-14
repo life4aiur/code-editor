@@ -103,16 +103,18 @@ function App() {
               </>
             </div>
             <div className="preview-section">
-              <LivePreview
-                ref={iframeRef}
-                htmlCode={htmlCode}
-                jsCode={jsCode}
-                cssCode={cssCode}
-              />
+              <div className="live-preview-flex">
+                <LivePreview
+                  ref={iframeRef}
+                  htmlCode={htmlCode}
+                  jsCode={jsCode}
+                  cssCode={cssCode}
+                />
+              </div>
+              <div className="console-section">
+                <Console iframeRef={iframeRef} />
+              </div>
             </div>
-          </div>
-          <div className="console-section">
-            <Console iframeRef={iframeRef} />
           </div>
         </div>
       </div>
