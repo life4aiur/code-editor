@@ -1,4 +1,6 @@
+
 import Editor from "@monaco-editor/react";
+import './CodeEditor.css';
 import { EditorHeader } from "./EditorHeader";
 
 type CodeEditorProps = {
@@ -12,10 +14,10 @@ const CodeEditor = ({
 }: CodeEditorProps) => {
   return (
     <div
-      className="h-full flex flex-col"
+      className="editor-container"
     >
       <EditorHeader title="HTML" onClear={() => onChange("")} />
-      <div className="flex-1">
+      <div className="editor-content">
         <Editor
           height="100%"
           defaultLanguage="html"

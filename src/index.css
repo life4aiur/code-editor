@@ -2,10 +2,21 @@
 @import "@symplr-ux/alloy-icons/dist/icons.min.css";
 @import "@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
 
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
 
 body {
   font-family: "InterVariable", sans-serif;

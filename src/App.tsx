@@ -12,26 +12,19 @@ function App() {
   const [jsCode, setJsCode] = useState("// Your JavaScript here");
   const [cssCode, setCssCode] = useState("/* Your CSS here */");
 
-  const onUpdateJavaScript = (newCode: string) => {
-    setJsCode((prevCode) => {
-      return prevCode ? `${prevCode}\n\n${newCode}` : newCode;
-    });
-  };
-
   return (
     <>
       <div
-        id="headerguy"
-        className="h-12 fixed top-0 w-full flex items-center px-4 py-2 justify-between bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
+        className="app-header"
       >
-        <h1 className="text-gray-900 dark:text-white flex items-center gap-2 text-xl">
+        <h1 className="app-title">
           <SymplIcon name="si-symplr" color="light" /> Alloy Sandbox
         </h1>
-        <div className="flex gap-4">
+        <div className="app-header-actions">
           <input
             type="file"
             id="load-file"
-            className="hidden"
+            className="file-input-hidden"
             accept=".json"
             onChange={(e) => {
               const file = e.target.files?.[0];
@@ -58,9 +51,7 @@ function App() {
           />
           <button
             onClick={() => document.getElementById("load-file")?.click()}
-            className="px-2 py-1 bg-blue-600 dark:bg-blue-600 hover:bg-blue-700
-                       dark:hover:bg-blue-700 rounded text-white dark:text-white
-                       flex items-center transition-colors"
+            className="app-header-btn"
             aria-label="Load file"
           >
             <SymplIcon name="si-upload" color="light" />
@@ -84,37 +75,34 @@ function App() {
               a.click();
               URL.revokeObjectURL(url);
             }}
-            className="px-2 py-1 bg-blue-600 dark:bg-blue-600 hover:bg-blue-700
-                       dark:hover:bg-blue-700 rounded text-white dark:text-white
-                       flex items-center transition-colors"
+            className="app-header-btn"
           >
             <SymplIcon name="si-save" color="light" />
           </button>
         </div>
       </div>
       <div
-        id="bodyguy"
-        className="flex h-[calc(100vh-3rem)] mt-12 border-2 border-gray-200 dark:border-gray-700"
+        className="app-body"
       >
-        <div className="flex-1 flex flex-col">
-          <div className="flex flex-1">
-            <div className="w-1/2 flex flex-col">
+        <div className="app-main">
+          <div className="app-editors-row">
+            <div className="app-editors-col">
               <>
-                <div className="h-1/3 border-b-2 border-gray-500">
+                <div className="editor-section">
                   <CodeEditor
                     code={htmlCode}
                     onChange={setHtmlCode}
                   />
                 </div>
-                <div className="h-1/3 border-b-2 border-gray-500">
+                <div className="editor-section">
                   <JavaScriptEditor code={jsCode} onChange={setJsCode} />
                 </div>
-                <div className="h-1/3">
+                <div className="editor-section">
                   <CSSEditor code={cssCode} onChange={setCssCode} />
                 </div>
               </>
             </div>
-            <div className="w-1/2 border-l-2 border-gray-500">
+            <div className="preview-section">
               <LivePreview
                 ref={iframeRef}
                 htmlCode={htmlCode}
@@ -123,7 +111,7 @@ function App() {
               />
             </div>
           </div>
-          <div className="h-48 border-t-2 border-gray-500">
+          <div className="console-section">
             <Console iframeRef={iframeRef} />
           </div>
         </div>

@@ -1,4 +1,6 @@
+
 import { forwardRef, useEffect } from "react";
+import './LivePreview.css';
 
 type LivePreviewProps = {
   htmlCode: string;
@@ -88,7 +90,7 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
             padding: "12px 16px",
             backgroundColor: "#1e1e1e",
             color: "#fff",
-            borderBottom: "1px solid #333",
+            borderBottom: "1px solid #000",
             display: "flex",
             gap: "12px",
             alignItems: "center",

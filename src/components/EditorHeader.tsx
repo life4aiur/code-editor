@@ -1,3 +1,4 @@
+import './EditorHeader.css';
 interface EditorHeaderProps {
   title: string;
   onClear: () => void;
@@ -7,13 +8,13 @@ interface EditorHeaderProps {
 
 export function EditorHeader({ title, onClear, onCollapse, isCollapsed }: EditorHeaderProps) {
   return (
-    <div className="bg-gray-800 text-white px-4 py-2 flex justify-between items-center">
+    <div className="editor-header">
       <span>{title}</span>
-      <div className="flex items-center gap-2">
+      <div className="editor-header-actions">
         {onCollapse && (
           <button
             onClick={onCollapse}
-            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-white flex items-center"
+            className="editor-header-btn"
             aria-label={isCollapsed ? 'Expand' : 'Collapse'}
           >
             {isCollapsed ? 'Expand' : 'Collapse'}
@@ -21,7 +22,7 @@ export function EditorHeader({ title, onClear, onCollapse, isCollapsed }: Editor
         )}
         <button
           onClick={onClear}
-          className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded text-white flex items-center"
+          className="editor-header-btn"
         >
           Clear
         </button>

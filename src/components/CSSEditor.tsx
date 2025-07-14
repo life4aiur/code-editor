@@ -1,4 +1,6 @@
+
 import Editor from "@monaco-editor/react";
+import './CSSEditor.css';
 import { EditorHeader } from "./EditorHeader";
 
 type CSSEditorProps = {
@@ -8,12 +10,12 @@ type CSSEditorProps = {
 
 const CSSEditor = ({ code, onChange }: CSSEditorProps) => {
   return (
-    <div className="h-full flex flex-col">
+    <div className="editor-container">
       <EditorHeader
         title="CSS"
         onClear={() => onChange("")}
       />
-      <div className="flex-1">
+      <div className="editor-content">
         <Editor
           height="100%"
           defaultLanguage="css"

@@ -1,5 +1,7 @@
+
 import Editor from "@monaco-editor/react";
 import { EditorHeader } from "./EditorHeader";
+import './JavaScriptEditor.css';
 
 type JavaScriptEditorProps = {
   code: string;
@@ -8,12 +10,12 @@ type JavaScriptEditorProps = {
 
 const JavaScriptEditor = ({ code, onChange }: JavaScriptEditorProps) => {
   return (
-    <div className="h-full flex flex-col">
+    <div className="editor-container">
       <EditorHeader
         title="JavaScript"
         onClear={() => onChange("")}
       />
-      <div className="flex-1">
+      <div className="editor-content">
         <Editor
           height="100%"
           defaultLanguage="javascript"

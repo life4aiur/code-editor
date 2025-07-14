@@ -1,0 +1,106 @@
+.console-section {
+  height: 12rem;
+  border-top: 2px solid #2d3748;
+}
+
+.editor-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-content {
+  flex: 1;
+}
+
+.app-header {
+  height: 3rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  justify-content: space-between;
+  background: #2d3748;
+  /* dark gray */
+  border-bottom: 1px solid #4a5568;
+  color: #fff;
+  z-index: 10;
+}
+
+.app-title {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.app-header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.app-body {
+  display: flex;
+  height: calc(100vh - 3rem);
+  margin-top: 3rem;
+  border: 2px solid #2d3748;
+  background: #2d3748;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-editors-row {
+  display: flex;
+  flex: 1;
+}
+
+.app-editors-col {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-section {
+  height: 33.3333%;
+  border-bottom: 2px solid #2d3748;
+}
+
+.preview-section {
+  width: 50%;
+  border-left: 2px solid #2d3748;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.app-header-btn {
+  padding: 0.5rem 0.5rem;
+  background-color: #2563eb;
+  /* blue-600 */
+  border-radius: 0.25rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.app-header-btn:hover {
+  background-color: #1d4ed8;
+  /* blue-700 */
+}
