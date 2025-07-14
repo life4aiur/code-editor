@@ -1,5 +1,5 @@
 import { SymplIcon } from "@symplr-ux/alloy-components/dist/react-bindings";
-import './EditorHeader.css';
+import './EditorHeader.scss';
 interface EditorHeaderProps {
   title: string;
   onClear: () => void;

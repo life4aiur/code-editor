@@ -1,6 +1,6 @@
 
 import Editor from "@monaco-editor/react";
-import './CodeEditor.css';
+import './CodeEditor.scss';
 import { EditorHeader } from "./EditorHeader";
 
 type CodeEditorProps = {

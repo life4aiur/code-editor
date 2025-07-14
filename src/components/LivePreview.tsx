@@ -1,7 +1,7 @@
 
 import { SymplIcon } from "@symplr-ux/alloy-components/dist/react-bindings";
 import { forwardRef, useEffect } from "react";
-import './LivePreview.css';
+import './LivePreview.scss';
 
 type LivePreviewProps = {
   htmlCode: string;

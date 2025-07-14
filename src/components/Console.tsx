@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import './Console.css';
+import './Console.scss';
 import EditorHeader from "./EditorHeader";
 
 type ConsoleProps = {
