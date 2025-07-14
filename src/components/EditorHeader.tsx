@@ -1,3 +1,4 @@
+import { SymplIcon } from "@symplr-ux/alloy-components/dist/react-bindings";
 import './EditorHeader.css';
 interface EditorHeaderProps {
   title: string;
@@ -22,9 +23,10 @@ export function EditorHeader({ title, onClear, onCollapse, isCollapsed }: Editor
         )}
         <button
           onClick={onClear}
-          className="editor-header-btn"
+          className="app-header-btn"
+          aria-label="Clear"
         >
-          Clear
+          <SymplIcon name="si-trash" color="light" />
         </button>
       </div>
     </div>

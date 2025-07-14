@@ -13,20 +13,21 @@ const Console = ({ iframeRef }: ConsoleProps) => {
   useEffect(() => {
     if (!iframeRef.current?.contentWindow) return;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const iframeWindow = iframeRef.current.contentWindow as any;
 
     // Override console methods
-    iframeWindow.console.log = (...args) => {
+    iframeWindow.console.log = (...args: unknown[]) => {
       setLogs(prev => [...prev, args.map(arg => JSON.stringify(arg)).join(' ')]);
     };
-    iframeWindow.console.error = (...args) => {
+    iframeWindow.console.error = (...args: unknown[]) => {
       setLogs(prev => [...prev, `Error: ${args.map(arg => JSON.stringify(arg)).join(' ')}`]);
     };
   }, [iframeRef]);
 
   return (
     <div className="console-container">
-      <EditorHeader title="Console Output" onClear={() => setLogs([])} />
+      <EditorHeader title="Console" onClear={() => setLogs([])} />
       <div className="console-logs">
         {logs.map((log, i) => (
           <div key={i}>{`> ${log}`}</div>
