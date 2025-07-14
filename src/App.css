@@ -1,6 +1,5 @@
 .console-section {
   height: 12rem;
-  border-top: 2px solid #2d3748;
 }
 
 .editor-container {
@@ -20,7 +19,6 @@
 .app-body {
   display: flex;
   height: 100vh;
-  border: 2px solid #2d3748;
   background: #2d3748;
 }
 
@@ -39,16 +37,33 @@
   width: 50%;
   display: flex;
   flex-direction: column;
-}
-
-.editor-section {
-  height: 33.3333%;
-  border-bottom: 2px solid #2d3748;
+  /* Add right border as separator */
+  border-right: 1.5px solid #444c5e;
+  box-sizing: border-box;
 }
 
 .preview-section {
   width: 50%;
-  border-left: 2px solid #2d3748;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  font-weight: 500;
+  /* Remove left border if present, handled by .app-editors-col */
+  border-left: none;
+}
+
+.app-editors-col {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-section {
+  height: 33.3333%;
+}
+
+.preview-section {
+  width: 50%;
   display: flex;
   flex-direction: column;
   font-size: 1rem;
@@ -64,7 +79,6 @@
   height: 12rem;
   min-height: 4rem;
   max-height: 50vh;
-  border-top: 2px solid #2d3748;
   overflow: auto;
 }
 

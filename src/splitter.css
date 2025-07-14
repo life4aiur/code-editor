@@ -1,0 +1,15 @@
+/* Splitter styles for draggable vertical divider */
+.splitter {
+    height: 100%;
+    background: #444c5e;
+    width: 6px;
+    min-width: 6px;
+    max-width: 12px;
+    cursor: col-resize;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.splitter:hover {
+    background: #5a6680;
+}
