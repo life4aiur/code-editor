@@ -38,7 +38,10 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
           <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/fonts/lato.min.css">
           <!-- Theme -->
           <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css">
-          <style>${cssCode}</style>
+          <style>
+            body { padding: 0.5rem; }
+            ${cssCode}
+          </style>
         </head>
         <body>
           ${htmlCode}
@@ -119,7 +122,6 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
           ref={ref}
           title="Live Preview"
           className="live-preview-iframe"
-          sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups"
         />
       </div>
     );
