@@ -1,6 +1,7 @@
 
 import { SymplIcon } from "@symplr-ux/alloy-components/dist/react-bindings";
 import { forwardRef, useEffect } from "react";
+import { useCodeEditorStore } from "../context/CodeEditorStore";
 import './LivePreview.scss';
 
 type LivePreviewProps = {
@@ -13,30 +14,28 @@ type LivePreviewProps = {
 
 const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
   ({ htmlCode, jsCode, cssCode, onUpload, onSave }, ref) => {
-    const iframeRef = ref as React.RefObject<HTMLIFrameElement>;
-
+    const { addLog } = useCodeEditorStore();
     useEffect(() => {
-      const init = async () => {
-        if (!iframeRef.current) return;
+      // Listen for console messages from iframe
+      const handleMessage = (event: MessageEvent) => {
+        if (event.data?.type === 'console') {
+          addLog(event.data.level, event.data.message);
+        }
+      };
+      window.addEventListener('message', handleMessage);
+      return () => {
+        window.removeEventListener('message', handleMessage);
+      };
+    }, [addLog]);
 
-        await new Promise((resolve) => setTimeout(resolve, 100));
-
-        const iframeDoc = iframeRef.current.contentDocument;
-        if (!iframeDoc) return;
-
-        // Write the HTML and CSS, but not the JS
-        iframeDoc.open();
-        iframeDoc.write(/*html*/ `
+    // Prepare srcdoc for iframe
+    const srcdoc = `
       <!DOCTYPE html>
       <html>
         <head>
-          <!-- Components for modern browsers -->
           <script type="module" src="/node_modules/@symplr-ux/alloy-components/dist/symplr-stencil-components/symplr-stencil-components.esm.js"></script>
-          <!-- Iconography -->
-          <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux//alloy-icons/dist/icons.min.css">
-          <!-- Font -->
+          <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-icons/dist/icons.min.css">
           <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/fonts/lato.min.css">
-          <!-- Theme -->
           <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css">
           <style>
             body { padding: 0.5rem; }
@@ -45,49 +44,21 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
         </head>
         <body>
           ${htmlCode}
+          <script type="text/javascript">
+            (function() {
+              const sendToParent = (level, ...args) => {
+                window.parent.postMessage({ type: 'console', level, message: args.map(a => {
+                  try { return typeof a === 'string' ? a : JSON.stringify(a); } catch { return String(a); }
+                }).join(' ') }, '*');
+              };
+              console.log = (...args) => sendToParent('log', ...args);
+              console.error = (...args) => sendToParent('error', ...args);
+              ${jsCode.replace(/function\s+(\w+)/g, "window.$1 = function")}
+            })();
+          </script>
         </body>
       </html>
-    `);
-        iframeDoc.close();
-
-        // Now inject the JS code as a script element
-        const script = iframeDoc.createElement("script");
-        script.type = "text/javascript";
-        // Correct regex: no double backslashes
-        script.text = `
-      (function() {
-        // Store initial window keys before adding any new ones
-        const initialKeys = Object.keys(window);
-
-        // Function to clean up only newly added properties
-        const cleanup = () => {
-          Object.keys(window).forEach(key => {
-            if (!initialKeys.includes(key)) {
-              delete window[key];
-            }
-          });
-        };
-
-        // Clean up previous runs
-        cleanup();
-
-        ${jsCode.replace(/function\s+(\w+)/g, "window.$1 = function")}
-      })();
     `;
-        iframeDoc.body.appendChild(script);
-      };
-
-      init();
-
-      // Cleanup function
-      return () => {
-        if (iframeRef.current?.contentDocument) {
-          const scripts =
-            iframeRef.current.contentDocument.getElementsByTagName("script");
-          Array.from(scripts).forEach((script) => script.remove());
-        }
-      };
-    }, [htmlCode, jsCode, cssCode, iframeRef]);
 
     return (
       <div className="live-preview-outer">
@@ -122,6 +93,8 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
           ref={ref}
           title="Live Preview"
           className="live-preview-iframe"
+          sandbox="allow-scripts"
+          srcDoc={srcdoc}
         />
       </div>
     );

@@ -1,21 +1,21 @@
 
 import Editor from "@monaco-editor/react";
+import { useCodeEditorStore } from "../context/CodeEditorStore";
 import './CSSEditor.scss';
 import { EditorHeader } from "./EditorHeader";
 
 type CSSEditorProps = {
-  code: string;
-  onChange: (value: string) => void;
   expanded?: boolean;
   onExpand?: () => void;
 };
 
-const CSSEditor = ({ code, onChange, expanded, onExpand }: CSSEditorProps) => {
+const CSSEditor = ({ expanded, onExpand }: CSSEditorProps) => {
+  const { cssCode, setCssCode } = useCodeEditorStore();
   return (
     <div className="editor-container">
       <EditorHeader
         title="CSS"
-        onClear={() => onChange("")}
+        onClear={() => setCssCode("")}
         onCollapse={onExpand}
         isCollapsed={!expanded}
       />
@@ -24,8 +24,8 @@ const CSSEditor = ({ code, onChange, expanded, onExpand }: CSSEditorProps) => {
           <Editor
             height="100%"
             defaultLanguage="css"
-            value={code}
-            onChange={(value) => onChange(value || "")}
+            value={cssCode}
+            onChange={(value) => setCssCode(value || "")}
             theme="vs-dark"
             options={{
               minimap: { enabled: false },

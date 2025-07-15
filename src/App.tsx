@@ -1,29 +1,18 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import EditorsColumn from "./components/EditorsColumn";
 import PreviewSection from "./components/PreviewSection";
+import { CodeEditorStoreProvider } from "./context/CodeStoreContext";
 import { useSplitter } from "./hooks/useSplitter";
 import "./splitter.scss";
 
-function App() {
-  // Multi-expand accordion: each editor can be expanded/collapsed independently
+function AppInner() {
   const [expanded, setExpanded] = useState({ html: true, js: true, css: true });
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [htmlCode, setHtmlCode] = useState("<h1>Hello, world!</h1>");
-  const [jsCode, setJsCode] = useState("// Your JavaScript here");
-  const [cssCode, setCssCode] = useState("/* Your CSS here */");
-  // Splitter state via custom hook
   const {
     editorColWidth,
     isDragging,
     containerRef,
     onSplitterMouseDown,
   } = useSplitter(50);
-
-  // ...existing code...
-
-  // Splitter drag logic is now handled by useSplitter
-
-  // ...existing code...
 
   return (
     <div className="app-body">
@@ -54,12 +43,6 @@ function App() {
             }}
           >
             <EditorsColumn
-              htmlCode={htmlCode}
-              setHtmlCode={setHtmlCode}
-              jsCode={jsCode}
-              setJsCode={setJsCode}
-              cssCode={cssCode}
-              setCssCode={setCssCode}
               expanded={expanded}
               setExpanded={setExpanded}
             />
@@ -73,19 +56,19 @@ function App() {
             className="preview-section"
             style={{ width: `${100 - editorColWidth}%` }}
           >
-            <PreviewSection
-              iframeRef={iframeRef}
-              htmlCode={htmlCode}
-              jsCode={jsCode}
-              cssCode={cssCode}
-              setHtmlCode={setHtmlCode}
-              setJsCode={setJsCode}
-              setCssCode={setCssCode}
-            />
+            <PreviewSection />
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <CodeEditorStoreProvider>
+      <AppInner />
+    </CodeEditorStoreProvider>
   );
 }
 

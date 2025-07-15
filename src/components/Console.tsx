@@ -1,36 +1,17 @@
 
-import { useEffect, useState } from "react";
+import { useCodeEditorStore } from '../context/CodeEditorStore';
 import './Console.scss';
 import EditorHeader from "./EditorHeader";
 
-type ConsoleProps = {
-  iframeRef: React.RefObject<HTMLIFrameElement>;
-};
-
-const Console = ({ iframeRef }: ConsoleProps) => {
-  const [logs, setLogs] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (!iframeRef.current?.contentWindow) return;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const iframeWindow = iframeRef.current.contentWindow as any;
-
-    // Override console methods
-    iframeWindow.console.log = (...args: unknown[]) => {
-      setLogs(prev => [...prev, args.map(arg => JSON.stringify(arg)).join(' ')]);
-    };
-    iframeWindow.console.error = (...args: unknown[]) => {
-      setLogs(prev => [...prev, `Error: ${args.map(arg => JSON.stringify(arg)).join(' ')}`]);
-    };
-  }, [iframeRef]);
+const Console = () => {
+  const { logs, clearLogs } = useCodeEditorStore();
 
   return (
     <div className="console-container">
-      <EditorHeader title="Console" onClear={() => setLogs([])} />
+      <EditorHeader title="Console" onClear={clearLogs} />
       <div className="console-logs">
         {logs.map((log, i) => (
-          <div key={i}>{`> ${log}`}</div>
+          <div key={i}>{`> ${log.level === 'error' ? 'Error: ' : ''}${log.message}`}</div>
         ))}
       </div>
     </div>

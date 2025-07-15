@@ -1,21 +1,21 @@
 
 import Editor from "@monaco-editor/react";
+import { useCodeEditorStore } from "../context/CodeEditorStore";
 import { EditorHeader } from "./EditorHeader";
 import './JavaScriptEditor.scss';
 
 type JavaScriptEditorProps = {
-  code: string;
-  onChange: (value: string) => void;
   expanded?: boolean;
   onExpand?: () => void;
 };
 
-const JavaScriptEditor = ({ code, onChange, expanded, onExpand }: JavaScriptEditorProps) => {
+const JavaScriptEditor = ({ expanded, onExpand }: JavaScriptEditorProps) => {
+  const { jsCode, setJsCode } = useCodeEditorStore();
   return (
     <div className="editor-container">
       <EditorHeader
         title="JavaScript"
-        onClear={() => onChange("")}
+        onClear={() => setJsCode("")}
         onCollapse={onExpand}
         isCollapsed={!expanded}
       />
@@ -24,8 +24,8 @@ const JavaScriptEditor = ({ code, onChange, expanded, onExpand }: JavaScriptEdit
           <Editor
             height="100%"
             defaultLanguage="javascript"
-            value={code}
-            onChange={(value) => onChange(value || "")}
+            value={jsCode}
+            onChange={(value) => setJsCode(value || "")}
             theme="vs-dark"
             options={{
               minimap: { enabled: false },
