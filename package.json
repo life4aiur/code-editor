@@ -1,17 +1,45 @@
 {
-  "name": "code-editor",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@dropsy-ui/code-editor",
+  "private": false,
+  "version": "1.0.0",
   "type": "module",
+  "description": "A React-based embeddable code editor with live HTML/CSS/JS preview",
+  "main": "dist/code-editor.umd.js",
+  "module": "dist/code-editor.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "CONTRIBUTING.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/life4aiur/code-editor.git"
+  },
+  "keywords": [
+    "code-editor",
+    "monaco-editor",
+    "embeddable",
+    "live-preview"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "homepage": "https://github.com/life4aiur/code-editor#readme",
+  "bugs": {
+    "url": "https://github.com/life4aiur/code-editor/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
-    "lucide-react": "^0.454.0",
     "monaco-editor": "^0.52.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
