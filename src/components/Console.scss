@@ -1,6 +1,6 @@
 .console-container {
-  background-color: #1e1e1e;
-  color: #fff;
+  background-color: var(--editor-bg-color);
+  color: var(--app-text-color);
   height: 100%;
   display: flex;
   flex-direction: column;

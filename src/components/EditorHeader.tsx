@@ -1,5 +1,8 @@
-import { SymplIcon } from "@symplr-ux/alloy-components/dist/react-bindings";
+import ChevronDown from '../assets/chevron-down.svg';
+import ChevronUp from '../assets/chevron-up.svg';
+import Trash from '../assets/trash.svg';
 import './EditorHeader.scss';
+
 interface EditorHeaderProps {
   title: string;
   onClear: () => void;
@@ -15,23 +18,24 @@ export function EditorHeader({ title, onClear, onCollapse, isCollapsed }: Editor
         {onCollapse && (
           <button
             onClick={onCollapse}
-            className="editor-header-btn"
+            className="app-btn"
             aria-label={isCollapsed ? 'Expand' : 'Collapse'}
             type="button"
           >
-            <SymplIcon name={isCollapsed ? 'si-chevron-down' : 'si-chevron-up'} color="light" />
+            {isCollapsed
+              ? <img src={ChevronDown} alt="Expand" />
+              : <img src={ChevronUp} alt="Collapse" />}
           </button>
         )}
         <button
-          onClick={onClear}
-          className="editor-header-btn"
+          onClick={onClear} className="app-btn"
           aria-label="Clear"
           type="button"
         >
-          <SymplIcon name="si-trash" color="light" />
+          <img src={Trash} alt="Clear" />
         </button>
       </div>
-    </div>
+    </div >
   );
 }
 

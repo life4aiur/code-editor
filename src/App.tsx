@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './App.scss';
 import EditorsColumn from "./components/EditorsColumn";
 import PreviewSection from "./components/PreviewSection";
 import { CodeEditorStoreProvider } from "./context/CodeStoreContext";
@@ -22,15 +23,15 @@ function AppInner() {
             position: 'fixed',
             top: 0,
             left: 0,
-            width: '100vw',
-            height: '100vh',
+            width: '100%',
+            height: '100%',
             zIndex: 9999,
             cursor: 'col-resize',
             background: 'transparent',
           }}
         />
       )}
-      <div className="app-main" style={{ height: '100vh', minHeight: 0 }}>
+      <div className="app-main" style={{ height: '100%', minHeight: 0 }}>
         <div className="app-editors-row" ref={containerRef} style={{ height: '100%', minHeight: 0 }}>
           <div
             className="app-editors-col"

@@ -1,6 +1,8 @@
 
-import { SymplIcon } from "@symplr-ux/alloy-components/dist/react-bindings";
+
 import { forwardRef, useEffect } from "react";
+import Save from '../assets/save.svg';
+import Upload from '../assets/upload.svg';
 import { useCodeEditorStore } from "../context/CodeEditorStore";
 import './LivePreview.scss';
 
@@ -74,18 +76,18 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
             />
             <button
               onClick={() => document.getElementById("live-load-file")?.click()}
-              className="app-header-btn"
+              className="app-btn"
               aria-label="Load file"
             >
-              <SymplIcon name="si-upload" color="light" />
+              <img src={Upload} alt="Upload" />
             </button>
             <button
               id="live-save-button"
               onClick={onSave}
-              className="app-header-btn"
+              className="app-btn"
               aria-label="Save file"
             >
-              <SymplIcon name="si-save" color="light" />
+              <img src={Save} alt="Save" />
             </button>
           </div>
         </div>

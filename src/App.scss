@@ -1,3 +1,32 @@
+:root {
+  --app-bg-color: #272f52;
+  --app-btn-bg-color: #2563eb;
+  --app-btn-hover-bg-color: #1d4ed8;
+  --app-border-color: #444c5e;
+  --app-text-color: #fff;
+  --editor-bg-color: #1e1e1e;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "InterVariable", sans-serif;
+}
+
 .console-section {
   height: 12rem;
 }
@@ -18,8 +47,8 @@
 
 .app-body {
   display: flex;
-  height: 100vh;
-  background: #2d3748;
+  height: 100%;
+  background: var(--app-bg-color);
 }
 
 .app-main {
@@ -38,7 +67,7 @@
   display: flex;
   flex-direction: column;
   /* Add right border as separator */
-  border-right: 1.5px solid #444c5e;
+  border-right: 1.5px solid var(--app-border-color);
   box-sizing: border-box;
 }
 
@@ -82,12 +111,10 @@
   overflow: auto;
 }
 
-.app-header-btn {
+.app-btn {
   padding: 0.5rem 0.5rem;
-  background-color: #2563eb;
-  /* blue-600 */
+  background-color: var(--app-btn-bg-color);
   border-radius: 0.25rem;
-  color: #fff;
   display: flex;
   align-items: center;
   transition: background 0.2s;
@@ -95,9 +122,13 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
+
+  img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
 
-.app-header-btn:hover {
-  background-color: #1d4ed8;
-  /* blue-700 */
+.app-btn:hover {
+  background-color: var(--app-btn-hover-bg-color);
 }

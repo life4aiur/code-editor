@@ -1,6 +1,6 @@
 .editor-header {
-  background-color: #2d3748;
-  color: #fff;
+  background-color: var(--app-bg-color);
+  color: var(--app-text-color);
   padding: 0.5rem 1rem;
   display: flex;
   justify-content: space-between;
@@ -9,27 +9,11 @@
   font-weight: 400;
   min-height: 2.5rem;
   height: 2.5rem;
-  border-bottom: 1px solid #3b4252;
+  border-bottom: 1px solid var(--app-border-color);
 
   .editor-header-actions {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-
-    .editor-header-btn {
-      padding: 0.25rem 0.5rem;
-      background-color: #4a5568;
-      border-radius: 0.25rem;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
-
-      &:hover {
-        background-color: #2d3748;
-      }
-    }
   }
 }

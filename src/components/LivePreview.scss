@@ -8,8 +8,8 @@
 }
 
 .live-preview-header {
-  background-color: #2d3748;
-  color: #fff;
+  background-color: var(--app-bg-color);
+  color: var(--app-text-color);
   padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
