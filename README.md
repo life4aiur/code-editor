@@ -9,24 +9,21 @@ A React-based embeddable code editor with live HTML/CSS/JS preview.
 - Embeddable as a standalone widget
 - JSON import/export of editor state
 
-## Usage
-
-### 1. Build the UMD Bundle
+## Installation
 
 ```sh
-npm install
-npm run build
+npm install @dropsy-ui/code-editor
 ```
 
 This will generate `dist/code-editor.umd.js`.
 
-### 2. Embed in Your Webpage
+## Usage
 
 Add the following to your HTML:
 
 ```html
 <div id="editor-container"></div>
-<script src="dist/code-editor.umd.js"></script>
+<script src="node_modules/@dropsy-ui/code-editor/dist/code-editor.umd.js"></script>
 <script>
   // Provide scripts and styles for the preview iframe
   const scripts = [
