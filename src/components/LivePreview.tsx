@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useMemo, useRef } from "react";
 import Save from '../assets/save.svg';
 import Upload from '../assets/upload.svg';
 import { useCodeEditorStore } from "../context/CodeEditorStore";
@@ -17,6 +17,8 @@ type LivePreviewProps = {
 const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
   ({ htmlCode, jsCode, cssCode, onUpload, onSave, iframeScripts = [], iframeStyles = [] }, ref) => {
     const { addLog } = useCodeEditorStore();
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
       // Listen for console messages from iframe
       const handleMessage = (event: MessageEvent) => {
@@ -29,9 +31,7 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
         window.removeEventListener('message', handleMessage);
       };
     }, [addLog]);
-
-    // Prepare srcdoc for iframe
-    const srcdoc = `
+    const srcdoc = useMemo(() => `
       <!DOCTYPE html>
       <html>
         <head>
@@ -57,7 +57,8 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
           </script>
         </body>
       </html>
-    `;
+    `, [htmlCode, jsCode, cssCode, iframeScripts, iframeStyles]);
+
 
     return (
       <div className="live-preview-outer">
@@ -66,13 +67,13 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
           <div className="live-preview-header-actions">
             <input
               type="file"
-              id="live-load-file"
+              ref={fileInputRef}
               className="file-input-hidden"
               accept=".json"
               onChange={onUpload}
             />
             <button
-              onClick={() => document.getElementById("live-load-file")?.click()}
+              onClick={() => fileInputRef.current?.click()}
               className="app-btn"
               aria-label="Load file"
             >
