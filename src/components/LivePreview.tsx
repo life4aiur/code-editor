@@ -1,5 +1,3 @@
-
-
 import { forwardRef, useEffect } from "react";
 import Save from '../assets/save.svg';
 import Upload from '../assets/upload.svg';
@@ -12,10 +10,12 @@ type LivePreviewProps = {
   cssCode: string;
   onUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSave?: () => void;
+  iframeScripts?: string[]; // Array of script URLs for the iframe
+  iframeStyles?: string[];  // Array of stylesheet URLs for the iframe
 };
 
 const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
-  ({ htmlCode, jsCode, cssCode, onUpload, onSave }, ref) => {
+  ({ htmlCode, jsCode, cssCode, onUpload, onSave, iframeScripts = [], iframeStyles = [] }, ref) => {
     const { addLog } = useCodeEditorStore();
     useEffect(() => {
       // Listen for console messages from iframe
@@ -35,12 +35,9 @@ const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
       <!DOCTYPE html>
       <html>
         <head>
-          <script type="module" src="/node_modules/@symplr-ux/alloy-components/dist/symplr-stencil-components/symplr-stencil-components.esm.js"></script>
-          <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-icons/dist/icons.min.css">
-          <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/fonts/lato.min.css">
-          <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css">
+          ${iframeScripts.map(src => `<script type="module" src="${src}"></script>`).join('\n')}
+          ${iframeStyles.map(href => `<link rel="stylesheet" type="text/css" href="${href}">`).join('\n')}
           <style>
-            body { padding: 0.5rem; }
             ${cssCode}
           </style>
         </head>

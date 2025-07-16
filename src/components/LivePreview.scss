@@ -32,7 +32,7 @@
 }
 
 .live-preview-iframe {
-  background-color: var(--alloy-alias-color-background-default);
+  background-color: var(--app-preview-bg-color);
   width: 100%;
   height: calc(100% - 2.5rem);
   border: none;

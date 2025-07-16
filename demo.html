@@ -27,9 +27,20 @@
   <div id="editor-container"></div>
   <script src="dist/code-editor.umd.js"></script>
   <script>
-    // Initialize the embedded editor
+    // Provide scripts and styles for the preview iframe
+    const scripts = [
+      "/node_modules/@symplr-ux/alloy-components/dist/symplr-stencil-components/symplr-stencil-components.esm.js"
+    ];
+    const styles = [
+      "/node_modules/@symplr-ux/alloy-icons/dist/icons.min.css",
+      "/node_modules/@symplr-ux/alloy-theme/dist/fonts/lato.min.css",
+      "/node_modules/@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css"
+    ];
+
+    // Initialize the embedded editor with scripts and styles
     const editor = new CodeEditor('#editor-container', {
-      // You can pass options here if your App supports them
+      scripts,
+      styles
     });
   </script>
 </body>

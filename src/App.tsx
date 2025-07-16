@@ -6,7 +6,13 @@ import { CodeEditorStoreProvider } from "./context/CodeStoreContext";
 import { useSplitter } from "./hooks/useSplitter";
 import "./splitter.scss";
 
-function AppInner() {
+// Accept iframeScripts and iframeStyles as props for embedding
+interface AppProps {
+  iframeScripts?: string[];
+  iframeStyles?: string[];
+}
+
+function AppInner({ iframeScripts = [], iframeStyles = [] }: AppProps) {
   const [expanded, setExpanded] = useState({ html: true, js: true, css: true });
   const {
     editorColWidth,
@@ -57,7 +63,7 @@ function AppInner() {
             className="preview-section"
             style={{ width: `${100 - editorColWidth}%` }}
           >
-            <PreviewSection />
+            <PreviewSection iframeScripts={iframeScripts} iframeStyles={iframeStyles} />
           </div>
         </div>
       </div>
@@ -65,10 +71,10 @@ function AppInner() {
   );
 }
 
-function App() {
+function App(props: AppProps) {
   return (
     <CodeEditorStoreProvider>
-      <AppInner />
+      <AppInner {...props} />
     </CodeEditorStoreProvider>
   );
 }

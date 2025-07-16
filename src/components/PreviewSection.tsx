@@ -1,9 +1,13 @@
-import React from "react";
 import { useCodeEditorStore } from "../context/CodeEditorStore";
 import Console from "./Console";
 import LivePreview from "./LivePreview";
 
-const PreviewSection: React.FC = () => {
+interface PreviewSectionProps {
+  iframeScripts?: string[];
+  iframeStyles?: string[];
+}
+
+const PreviewSection = ({ iframeScripts = [], iframeStyles = [] }: PreviewSectionProps) => {
   const { htmlCode, jsCode, cssCode, setHtmlCode, setJsCode, setCssCode } = useCodeEditorStore();
   return (
     <>
@@ -12,6 +16,8 @@ const PreviewSection: React.FC = () => {
           htmlCode={htmlCode}
           jsCode={jsCode}
           cssCode={cssCode}
+          iframeScripts={iframeScripts}
+          iframeStyles={iframeStyles}
           onUpload={e => {
             const file = e.target.files?.[0];
             if (!file) return;
