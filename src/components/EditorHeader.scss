@@ -1,0 +1,19 @@
+.editor-header {
+  background-color: var(--app-bg-color);
+  color: var(--app-text-color);
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 400;
+  min-height: 2.5rem;
+  height: 2.5rem;
+  border-bottom: 1px solid var(--app-border-color);
+
+  .editor-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
