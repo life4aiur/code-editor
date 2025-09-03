@@ -1,50 +1,51 @@
-# React + TypeScript + Vite
+# CodeEditor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based embeddable code editor with live HTML/CSS/JS preview.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Live HTML, CSS, and JavaScript editing
+- Real-time preview with console output
+- Embeddable as a standalone widget
+- JSON import/export of editor state
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+npm install @dropsy-ui/code-editor
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+This will generate `dist/code-editor.umd.js`.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Usage
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+Add the following to your HTML:
+
+```html
+<div id="editor-container"></div>
+<script src="node_modules/@dropsy-ui/code-editor/dist/code-editor.umd.js"></script>
+<script>
+  // Provide scripts and styles for the preview iframe
+  const scripts = [
+    // Example: "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"
+  ];
+  const styles = [
+    // Example: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  ];
+
+  // Initialize the embedded editor
+  const editor = new CodeEditor('#editor-container', {
+    scripts, // Array of JS URLs for the preview iframe
+    styles   // Array of CSS URLs for the preview iframe
+  });
+</script>
 ```
+
+### 3. Editor State Import/Export
+
+- **Export:** Click the Save button to download the current state as a JSON file.
+- **Import:** Click the Upload button and select a previously saved JSON file to restore the editor state.
+
+---
+
+For development and contributing, see [CONTRIBUTING.md](CONTRIBUTING.md).

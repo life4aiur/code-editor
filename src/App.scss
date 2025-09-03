@@ -1,0 +1,129 @@
+:root {
+  --app-bg-color: #272f52;
+  --app-btn-bg-color: #2563eb;
+  --app-btn-hover-bg-color: #1d4ed8;
+  --app-border-color: #444c5e;
+  --app-preview-bg-color: #fff;
+  --app-text-color: #fff;
+  --editor-bg-color: #1e1e1e;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "InterVariable", sans-serif;
+}
+
+.console-section {
+  height: 12rem;
+}
+
+.editor-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-content {
+  flex: 1;
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.app-body {
+  display: flex;
+  height: 100%;
+  background: var(--app-bg-color);
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-editors-row {
+  display: flex;
+  flex: 1;
+}
+
+.app-editors-col {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  /* Add right border as separator */
+  border-right: 1.5px solid var(--app-border-color);
+  box-sizing: border-box;
+}
+
+.preview-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  font-weight: 500;
+  /* Remove left border if present, handled by .app-editors-col */
+  border-left: none;
+}
+
+.editor-section {
+  height: 33.3333%;
+}
+
+.preview-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.live-preview-flex {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.console-section {
+  height: 12rem;
+  min-height: 4rem;
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.app-btn {
+  padding: 0.5rem 0.5rem;
+  background-color: var(--app-btn-bg-color);
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.app-btn:hover {
+  background-color: var(--app-btn-hover-bg-color);
+}

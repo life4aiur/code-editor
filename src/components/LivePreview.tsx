@@ -1,64 +1,102 @@
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useMemo, useRef } from "react";
+import Save from '../assets/save.svg';
+import Upload from '../assets/upload.svg';
+import { useCodeEditorStore } from "../context/CodeEditorStore";
+import './LivePreview.scss';
 
 type LivePreviewProps = {
   htmlCode: string;
   jsCode: string;
   cssCode: string;
+  onUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSave?: () => void;
+  iframeScripts?: string[]; // Array of script URLs for the iframe
+  iframeStyles?: string[];  // Array of stylesheet URLs for the iframe
 };
 
 const LivePreview = forwardRef<HTMLIFrameElement, LivePreviewProps>(
-  ({ htmlCode, jsCode, cssCode }, ref) => {
-    const iframeRef = ref as React.RefObject<HTMLIFrameElement>;
+  ({ htmlCode, jsCode, cssCode, onUpload, onSave, iframeScripts = [], iframeStyles = [] }, ref) => {
+    const { addLog } = useCodeEditorStore();
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-      const init = async () => {
-        if (!iframeRef.current) return;
-
-        await new Promise((resolve) => setTimeout(resolve, 100));
-
-        const iframeDoc = iframeRef.current.contentDocument;
-        if (!iframeDoc) return;
-
-        iframeDoc.open();
-        iframeDoc.write(/*html*/ `
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-                <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-                <!-- Components for modern browsers -->
-                <script type="module" src="/node_modules/@symplr-ux/alloy-components/dist/symplr-stencil-components/symplr-stencil-components.esm.js"></script>
-                <!-- Iconography -->
-                <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux//alloy-icons/dist/icons.min.css">
-                <!-- Font -->
-                <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/fonts/lato.min.css">
-                <!-- Theme -->
-                <link rel="stylesheet" type="text/css" href="/node_modules/@symplr-ux/alloy-theme/dist/css/sympl-theme.min.css">
-                <style>
-                ${cssCode}
-                </style>
-            </head>
-            <body>
-                ${htmlCode}
-            <script>
-            ${jsCode}
-            </script>
-            </body>
-        </html>
-      `);
-        iframeDoc.close();
+      // Listen for console messages from iframe
+      const handleMessage = (event: MessageEvent) => {
+        if (event.data?.type === 'console') {
+          addLog(event.data.level, event.data.message);
+        }
       };
+      window.addEventListener('message', handleMessage);
+      return () => {
+        window.removeEventListener('message', handleMessage);
+      };
+    }, [addLog]);
+    const srcdoc = useMemo(() => `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          ${iframeScripts.map(src => `<script type="module" src="${src}"></script>`).join('\n')}
+          ${iframeStyles.map(href => `<link rel="stylesheet" type="text/css" href="${href}">`).join('\n')}
+          <style>
+            ${cssCode}
+          </style>
+        </head>
+        <body>
+          ${htmlCode}
+          <script type="text/javascript">
+            (function() {
+              const sendToParent = (level, ...args) => {
+                window.parent.postMessage({ type: 'console', level, message: args.map(a => {
+                  try { return typeof a === 'string' ? a : JSON.stringify(a); } catch { return String(a); }
+                }).join(' ') }, '*');
+              };
+              console.log = (...args) => sendToParent('log', ...args);
+              console.error = (...args) => sendToParent('error', ...args);
+              ${jsCode.replace(/function\s+(\w+)/g, "window.$1 = function")}
+            })();
+          </script>
+        </body>
+      </html>
+    `, [htmlCode, jsCode, cssCode, iframeScripts, iframeStyles]);
 
-      init();
-    }, [htmlCode, jsCode, cssCode]);
 
     return (
-      <iframe
-        ref={ref}
-        title="Live Preview"
-        style={{ width: "100%", height: "100%", border: "none" }}
-        sandbox="allow-scripts allow-same-origin allow-modals allow-forms"
-      />
+      <div className="live-preview-outer">
+        <div className="live-preview-header">
+          <span className="live-preview-title">Live Preview</span>
+          <div className="live-preview-header-actions">
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="file-input-hidden"
+              accept=".json"
+              onChange={onUpload}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="app-btn"
+              aria-label="Load file"
+            >
+              <img src={Upload} alt="Upload" />
+            </button>
+            <button
+              id="live-save-button"
+              onClick={onSave}
+              className="app-btn"
+              aria-label="Save file"
+            >
+              <img src={Save} alt="Save" />
+            </button>
+          </div>
+        </div>
+        <iframe
+          ref={ref}
+          title="Live Preview"
+          className="live-preview-iframe"
+          sandbox="allow-scripts"
+          srcDoc={srcdoc}
+        />
+      </div>
     );
   }
 );
