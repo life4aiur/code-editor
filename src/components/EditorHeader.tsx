@@ -35,7 +35,7 @@ export function EditorHeader({ title, onClear, onCollapse, isCollapsed }: Editor
           <img src={Trash} alt="Clear" />
         </button>
       </div>
-    </div >
+    </div>
   );
 }
 
